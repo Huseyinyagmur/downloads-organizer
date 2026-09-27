@@ -19,7 +19,6 @@ CATEGORIES = {
   "Network" => %w[.pka .pkt],
   "Project" => %w[.drawio]
 }
-
 def categorize(file_name)
   extension = File.extname(file_name).downcase
 
@@ -61,7 +60,6 @@ end
 
 unless Dir.exist?(DOWNLOADS_PATH)
   puts "Hata: Downloads klasörü bulunamadı."
-  write_log("FAILED | Downloads klasörü bulunamadı")
   exit 1
 end
 
@@ -107,9 +105,6 @@ if ARGV.include?("--dry-run")
 
   categorized_files.each do |category, category_files|
     category_files.each do |file|
-      destination_dir = File.join(DOWNLOADS_PATH, category)
-      destination = File.join(destination_dir, file)
-
       puts "#{file}"
       puts "  -> #{category}/#{file}"
     end
