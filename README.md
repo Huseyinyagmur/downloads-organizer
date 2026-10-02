@@ -69,6 +69,8 @@ Veya `.env` dosyası oluşturarak yönetebilirsiniz (Bu dosya `.gitignore` a ekl
 
 ## 11. Çalıştırma Komutları
 
+### CLI Usage (Terminal)
+
 **Normal Organizer (Taşıma):**
 ```powershell
 ruby tidy_downloads.rb
@@ -89,26 +91,49 @@ ruby file_assistant.rb search "sorgu metni"
 ruby file_assistant.rb search "sorgu metni" --dry-run
 ```
 
-## 12. Test Komutu
+### Web Interface
+
+Uygulamayı tarayıcı üzerinden, daha kullanıcı dostu bir arayüzle kullanabilirsiniz.
+
+**Running the Web App:**
+```powershell
+bundle exec ruby web_app.rb
+```
+
+Uygulama çalıştıktan sonra tarayıcınızda şu adrese gidin:
+[http://localhost:4567](http://localhost:4567)
+
+Web arayüzü sayesinde:
+- Hedef klasörleri form alanından kolayca seçebilirsiniz.
+- AI Search sonuçlarını (sadece ilgili/relevant olanları) kartlar halinde inceleyebilirsiniz.
+- Seçtiğiniz dosyanın yanındaki hedef formunu kullanarak tek tıklamayla dosyayı taşıyabilirsiniz.
+
+## 12. User Approval
+AI dosyaları otomatik olarak taşımaz. Kullanıcı taşımayı onaylamadan (CLI'da "y" diyerek, Web arayüzünde "Taşı" butonuna basarak) dosya hareket ettirilmez.
+
+## 13. Test Komutu
 Projedeki tüm testleri çalıştırmak ve sistemdeki kırılmaları önlemek için (API çağrıları mock'lanmıştır):
 ```powershell
 ruby -Ilib:test -e "Dir.glob('./test/**/*_test.rb').each { |file| require file }"
 ```
 
-## 13. Log Sistemi
-Program her çalıştırıldığında sonuçları `logs/organizer.log` dosyasına kaydeder.
+## 14. Log Sistemi
+Program her çalıştırıldığında CLI ve Web üzerinden yapılan sonuçları `logs/organizer.log` dosyasına kaydeder.
 AI Search loglarında kesinlikle API key veya dosya içeriği **loglanmaz**. Yalnızca sorgu metni, taranan dosya sayısı ve eşleşen dosya sayısı kaydedilir:
 ```text
 2026-10-02 18:30:10 | AI_SEARCH | query="bitirme projesi" | scanned=42 | matched=5
+2026-10-02 19:30:12 | WEB_SEARCH | Query: bitirme projesi | 2 dosya incelendi | 1 ilgili
+2026-10-02 19:31:04 | WEB_MOVE | bitirme_notu.txt -> Bitirme-Projesi
 ```
 
-## 14. Güvenlik
+## 15. Security & Environment Variables
 - Tüm dosya içerikleri API'ye gönderilmez. Büyük dosyalar (100 KB üstü) es geçilir, metinler maksimum 2000 karakterle sınırlandırılır.
 - Hassas `.env` dosyası `.gitignore` kuralları ile versiyon kontrol sisteminden çıkarılmıştır.
 - Herhangi bir ortam değişkeni (API Key) log dosyalarına kaydedilmez.
+- Web uygulamasında kullanıcı girdileri (folder path, dosya adları, vb.) HTML içine basılırken `ERB escaping` (HTML kaçış karakterleri) kullanılarak XSS saldırılarına karşı korunmuştur.
 - Bilgisayardaki tüm dosya sistemi izinsiz taranmaz; kullanıcı açıkça tarama yapılacak klasörü belirtir.
 
-## 15. 5 Günlük Gerçek Kullanım Değerlendirmesi
+## 16. 5 Günlük Gerçek Kullanım Değerlendirmesi
 Araç teslimden önce en az 5 gün gerçek kullanım sırasında kullanılacaktır. Her çalıştırma `logs/organizer.log` dosyasına kaydedilecektir. 5 günlük kullanım sonunda aşağıdaki değerler karşılaştırılacaktır:
 - Toplam araç çalıştırma sayısı
 - Organize edilen ve AI ile bulunan dosya sayısı
@@ -118,7 +143,7 @@ Araç teslimden önce en az 5 gün gerçek kullanım sırasında kullanılacakt�
 
 *(Gerçek kullanım tamamlanmadan sonuç değerleri eklenmeyecektir.)*
 
-## 16. Proje Yapısı
+## 17. Proje Yapısı
 
 ```text
 downloads-organizer/
@@ -127,11 +152,21 @@ downloads-organizer/
 ├── file_assistant.rb          # AI File Search CLI ana girişi
 ├── file_reader.rb             # Dosya okuma modülü
 ├── ai_classifier.rb           # AI API bağlantı ve JSON parse modülü
+├── web_app.rb                 # Sinatra Web App ana girişi
+├── Gemfile                    # Ruby bağımlılıkları (Sinatra vb.)
 ├── .gitignore                 # Güvenlik ve çöp dosyaları engelleme
+│
+├── views/
+│   ├── layout.erb             # Web arayüzü iskeleti
+│   └── index.erb              # Web arayüzü ana sayfası
+│
+├── public/
+│   └── style.css              # Web arayüzü CSS tasarımı
 │
 ├── test/
 │   ├── tidy_downloads_test.rb # Temel organizer testleri
-│   └── file_assistant_test.rb # AI özelliği ve okuma testleri
+│   ├── file_assistant_test.rb # AI özelliği ve okuma testleri
+│   └── web_app_test.rb        # Web API / UI uç noktası testleri
 │
 ├── logs/
 │   └── organizer.log          # Çalıştırma geçmişi

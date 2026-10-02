@@ -1,0 +1,41 @@
+<form action="/search" method="post">
+  <div class="form-group">
+    <label for="folder">Folder:</label>
+    <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" required>
+  </div>
+  <div class="form-group">
+    <label for="query">What are you looking for?</label>
+    <input type="text" id="query" name="query" value="<%= @query ? html_escape(@query) : 'bitirme projesiyle ilgili dosyaları bul' %>" required>
+  </div>
+  <button type="submit">AI ile Ara</button>
+</form>
+
+<% if @results %>
+  <hr>
+  <div class="results-summary">
+    <h2>AI SEARCH RESULTS</h2>
+    <p>Query: "<%= html_escape(@query) %>"</p>
+    <p><%= @total_scanned %> dosya incelendi.<br><%= @results.length %> ilgili dosya bulundu.</p>
+  </div>
+
+  <% @results.each_with_index do |item, index| %>
+    <div class="result-card">
+      <h3>📄 <%= html_escape(item[:info][:file_name]) %></h3>
+      
+      <div class="reason">
+        <strong>Reason:</strong><br>
+        "<%= html_escape(item[:result]["reason"]) %>"
+      </div>
+
+      <form action="/move" method="post" class="move-form">
+        <input type="hidden" name="source_path" value="<%= html_escape(item[:info][:path]) %>">
+        <input type="hidden" name="file_name" value="<%= html_escape(item[:info][:file_name]) %>">
+        <div class="form-group">
+          <label>Hedef Klasör:</label>
+          <input type="text" name="dest_folder" value="<%= html_escape(@folder) %>\Move-Target" required>
+        </div>
+        <button type="submit">Taşı</button>
+      </form>
+    </div>
+  <% end %>
+<% end %>

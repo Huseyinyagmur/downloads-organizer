@@ -9,3 +9,9 @@
 2026-09-27 10:58:20 | SUCCESS | 2 dosya taşındı
 2026-10-02 19:05:27 | AI_SEARCH | query="bitirme projesiyle ilgili dosyaları bul" | scanned=2 | matched=1
 2026-10-02 19:10:20 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 19:19:50 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 20:46:13 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 20:46:13 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-02 21:03:25 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
+2026-10-02 21:03:36 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
+2026-10-02 21:04:16 | WEB_MOVE | bitirme_notu.txt -> Move-Target
