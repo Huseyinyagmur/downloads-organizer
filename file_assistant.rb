@@ -40,7 +40,7 @@ module FileAssistant
     is_dry_run = ARGV.include?("--dry-run")
 
     puts "Enter folder to search:"
-    search_dir = STDIN.gets&.chomp || ""
+    search_dir = $stdin.gets&.chomp || ""
 
     # Expand ~ if used
     search_dir = File.expand_path(search_dir)
@@ -66,7 +66,6 @@ module FileAssistant
     end
 
     matched_files = []
-
     matched_results = []
 
     results.each do |result|
@@ -111,14 +110,14 @@ module FileAssistant
 
     puts "#{matched_files.length} related files found."
     puts "\nEnter destination folder to move these files to:"
-    dest_dir = STDIN.gets&.chomp || ""
+    dest_dir = $stdin.gets&.chomp || ""
     dest_dir = File.expand_path(dest_dir)
 
     puts "\nMove these files to:"
     puts dest_dir
     print "[y/n]: "
     
-    answer = (STDIN.gets&.chomp || "").downcase
+    answer = ($stdin.gets&.chomp || "").downcase
     if answer == "y"
       FileUtils.mkdir_p(dest_dir)
       moved_count = 0

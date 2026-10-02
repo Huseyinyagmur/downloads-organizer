@@ -1,6 +1,7 @@
 require "minitest/autorun"
 require_relative "../file_reader"
 require_relative "../ai_classifier"
+require_relative "../file_assistant"
 
 class FileAssistantTest < Minitest::Test
 
