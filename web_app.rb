@@ -8,6 +8,20 @@ helpers do
   def html_escape(text)
     Rack::Utils.escape_html(text)
   end
+
+  def get_file_icon(filename)
+    ext = File.extname(filename.to_s).downcase
+    case ext
+    when '.pdf' then '📕'
+    when '.txt' then '📄'
+    when '.docx', '.doc' then '📝'
+    when '.csv', '.xlsx', '.xls' then '📊'
+    when '.png', '.jpg', '.jpeg', '.gif', '.svg' then '🖼️'
+    when '.zip', '.rar', '.tar', '.gz' then '📦'
+    when '.py', '.rb', '.js', '.html', '.css', '.json' then '💻'
+    else '📄'
+    end
+  end
 end
 
 def log_web_search(query, scanned_count, matched_count)

@@ -1,41 +1,72 @@
-<form action="/search" method="post">
-  <div class="form-group">
-    <label for="folder">Folder:</label>
-    <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" required>
-  </div>
-  <div class="form-group">
-    <label for="query">What are you looking for?</label>
-    <input type="text" id="query" name="query" value="<%= @query ? html_escape(@query) : 'bitirme projesiyle ilgili dosyaları bul' %>" required>
-  </div>
-  <button type="submit">AI ile Ara</button>
-</form>
+<div class="card search-card">
+  <h2>🔎 AI FILE SEARCH</h2>
+  <form action="/search" method="post" onsubmit="showLoading(event)">
+    <div class="form-group">
+      <label for="folder">Folder</label>
+      <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" placeholder="C:\Path\To\Folder" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="query">What are you looking for?</label>
+      <input type="text" id="query" name="query" value="<%= @query ? html_escape(@query) : 'bitirme projesiyle ilgili dosyaları bul' %>" placeholder="e.g. Find invoices from 2023" required>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">✨ AI ile Ara</button>
+    </div>
+  </form>
+</div>
 
 <% if @results %>
-  <hr>
-  <div class="results-summary">
-    <h2>AI SEARCH RESULTS</h2>
-    <p>Query: "<%= html_escape(@query) %>"</p>
-    <p><%= @total_scanned %> dosya incelendi.<br><%= @results.length %> ilgili dosya bulundu.</p>
+  <div class="summary-card">
+    <div class="summary-header">
+      <h3>AI SEARCH RESULTS</h3>
+      <p class="summary-query">"<%= html_escape(@query) %>"</p>
+    </div>
+    <div class="summary-stats">
+      <div class="stat-box">
+        <span class="stat-value"><%= @total_scanned %></span>
+        <span class="stat-label">Files<br>analyzed</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value highlight"><%= @results.length %></span>
+        <span class="stat-label">Relevant<br>files</span>
+      </div>
+    </div>
   </div>
 
-  <% @results.each_with_index do |item, index| %>
-    <div class="result-card">
-      <h3>📄 <%= html_escape(item[:info][:file_name]) %></h3>
-      
-      <div class="reason">
-        <strong>Reason:</strong><br>
-        "<%= html_escape(item[:result]["reason"]) %>"
-      </div>
-
-      <form action="/move" method="post" class="move-form">
-        <input type="hidden" name="source_path" value="<%= html_escape(item[:info][:path]) %>">
-        <input type="hidden" name="file_name" value="<%= html_escape(item[:info][:file_name]) %>">
-        <div class="form-group">
-          <label>Hedef Klasör:</label>
-          <input type="text" name="dest_folder" value="<%= html_escape(@folder) %>\Move-Target" required>
+  <div class="results-container">
+    <% @results.each do |item| %>
+      <div class="card result-card">
+        <div class="result-header">
+          <span class="file-icon"><%= get_file_icon(item[:info][:file_name]) %></span>
+          <h3 class="file-name"><%= html_escape(item[:info][:file_name]) %></h3>
         </div>
-        <button type="submit">Taşı</button>
-      </form>
-    </div>
-  <% end %>
+        
+        <div class="reason-box">
+          <div class="reason-label">AI Reason</div>
+          <div class="reason-text">"<%= html_escape(item[:result]["reason"]) %>"</div>
+        </div>
+
+        <form action="/move" method="post" class="move-form">
+          <input type="hidden" name="source_path" value="<%= html_escape(item[:info][:path]) %>">
+          <input type="hidden" name="file_name" value="<%= html_escape(item[:info][:file_name]) %>">
+          
+          <div class="form-group row-group">
+            <div class="input-wrapper">
+              <label>Target folder</label>
+              <input type="text" name="dest_folder" value="<%= html_escape(@folder) %>\Move-Target" required>
+            </div>
+            <button type="submit" class="btn-secondary">📦 Taşı</button>
+          </div>
+        </form>
+      </div>
+    <% end %>
+  </div>
+<% elsif request.path_info == '/' && !@error && !@success %>
+  <div class="card empty-state">
+    <div class="empty-icon">✨</div>
+    <h2>AI ile dosyalarınızı bulun</h2>
+    <p>Bir klasör seçin ve ne aradığınızı<br>doğal dille yazın.</p>
+  </div>
 <% end %>

@@ -59,7 +59,7 @@ class WebAppTest < Minitest::Test
       AiClassifier.stub :classify_files, mock_results do
         post '/search', folder: test_dir, query: 'find test'
         assert_predicate last_response, :ok?
-        assert_match(/1 ilgili dosya bulundu/, last_response.body)
+        assert_match(/Relevant<br>files/, last_response.body)
         assert_match(/Because test\./, last_response.body)
       end
     ensure

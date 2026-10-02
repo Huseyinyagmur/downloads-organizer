@@ -7,25 +7,53 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+  <nav class="top-nav">
+    <div class="nav-container">
+      <div class="nav-left">
+        <span class="logo">📁 AI File Assistant</span>
+        <span class="logo-subtitle">AI-powered file search & organization</span>
+      </div>
+      <div class="nav-right">
+        <span class="status-badge"><span class="status-dot"></span> AI Ready</span>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
-    <header>
-      <h1>AI File Assistant</h1>
-      <p class="subtitle">Dosyalarınızı doğal dil ile arayın ve düzenleyin.</p>
-    </header>
+    <% if request.path_info == '/' && !@results && !@error && !@success %>
+      <div class="hero">
+        <h1>Find the files you need using natural language.</h1>
+        <p>Dosyalarınızı doğal dil kullanarak bulun, analiz edin ve düzenleyin.</p>
+      </div>
+    <% end %>
 
     <% if @error %>
-      <div class="alert">
-        <%= html_escape(@error) %>
+      <div class="alert alert-error">
+        <strong>⚠️ Something went wrong</strong>
+        <p><%= html_escape(@error) %></p>
       </div>
     <% end %>
 
     <% if @success %>
       <div class="alert alert-success">
-        <%= html_escape(@success) %>
+        <strong>✓ File moved successfully</strong>
+        <p><%= html_escape(@success) %></p>
       </div>
     <% end %>
 
     <%= yield %>
   </div>
+
+  <script>
+    function showLoading(event) {
+      const btn = event.target.querySelector('button[type="submit"]');
+      if(btn) {
+        btn.innerHTML = '<span class="spinner">⟳</span> AI dosyaları analiz ediyor...';
+        btn.classList.add('loading');
+        // We do NOT disable the button immediately as it can prevent form submission in some browsers.
+        // Instead, just change its appearance and text.
+      }
+    }
+  </script>
 </body>
 </html>

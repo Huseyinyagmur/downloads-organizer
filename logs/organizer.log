@@ -15,3 +15,16 @@
 2026-10-02 21:03:25 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
 2026-10-02 21:03:36 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
 2026-10-02 21:04:16 | WEB_MOVE | bitirme_notu.txt -> Move-Target
+2026-10-02 21:12:41 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 21:12:41 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-02 21:15:13 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-02 21:15:13 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 21:18:57 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-02 21:18:57 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-02 21:23:52 | WEB_MOVE | bitirme_notu.txt -> Move-Target
+2026-10-02 21:24:00 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 1 dosya incelendi | 0 ilgili
+2026-10-02 21:24:10 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 1 dosya incelendi | 0 ilgili
+2026-10-02 21:24:29 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
+2026-10-02 21:24:37 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
+2026-10-02 21:24:58 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
+2026-10-02 21:25:01 | WEB_MOVE | bitirme_notu.txt -> Move-Target
