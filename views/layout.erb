@@ -7,70 +7,159 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <nav class="top-nav">
-    <div class="nav-container">
-      <div class="nav-left">
-        <span class="logo">📁 AI File Assistant</span>
-        <span class="logo-subtitle">AI-powered file search & organization</span>
+  <div class="app-wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-icon">📁</span>
+        <span class="brand-text">AI File Assistant</span>
       </div>
-      <div class="nav-right">
-        <span class="status-badge"><span class="status-dot"></span> AI Ready</span>
+      
+      <div class="sidebar-nav">
+        <div class="nav-section">
+          <h4 class="nav-heading">SEARCH</h4>
+          <a href="#" class="nav-item active">
+            <span class="nav-icon">🏠</span> File Search
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <h4 class="nav-heading">ORGANIZE</h4>
+          <a href="#" class="nav-item" onclick="browseFolder(); return false;">
+            <span class="nav-icon">📂</span> Klasör Seç
+          </a>
+        </div>
       </div>
-    </div>
-  </nav>
+      
+      <div class="sidebar-footer">
+        <div class="status-box">
+          <h4 class="nav-heading">AI Status</h4>
+          <div class="status-indicator">
+            <span class="status-dot"></span> Gemini Connected
+          </div>
+        </div>
+      </div>
+    </aside>
 
-  <div class="container">
-    <% if request.path_info == '/' && !@results && !@error && !@success %>
-      <div class="hero">
-        <h1>Find the files you need using natural language.</h1>
-        <p>Dosyalarınızı doğal dil kullanarak bulun, analiz edin ve düzenleyin.</p>
-      </div>
-    <% end %>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="header-left">
+          <h1 class="header-title">AI File Assistant</h1>
+          <p class="header-subtitle">Yapay zekâ destekli dosya arama ve organizasyon</p>
+        </div>
+        <div class="header-right">
+          <div class="badge badge-outline">Gemini 2.5 Flash</div>
+          <div class="status-badge"><span class="status-dot"></span> AI Hazır</div>
+        </div>
+      </header>
 
-    <% if @error %>
-      <div class="alert alert-error">
-        <strong>⚠️ Something went wrong</strong>
-        <p><%= html_escape(@error) %></p>
-      </div>
-    <% end %>
+      <div class="content-container">
+        <% if request.path_info == '/' && !@results && !@error && !@success %>
+          <!-- HERO SECTION -->
+          <div class="hero-section">
+            <h2 class="hero-title">AI ile dosyalarınızı bulun.</h2>
+            <p class="hero-text">
+              Dosyalarınızı manuel olarak tek tek aramak yerine,
+              ne aradığınızı yazın. AI dosya isimlerini ve okunabilir
+              içeriklerini analiz ederek ilgili dosyaları bulsun.
+            </p>
+            <div class="hero-badges">
+              <span class="badge badge-soft">✨ AI Powered</span>
+              <span class="badge badge-soft">📄 Content Analysis</span>
+              <span class="badge badge-soft">🔍 Smart Search</span>
+            </div>
+          </div>
+          
+          <!-- QUICK INFO CARDS -->
+          <div class="quick-info-grid">
+            <div class="info-card">
+              <div class="info-icon">✨</div>
+              <div class="info-content">
+                <strong>AI Search</strong>
+                <span>Natural Lang.</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-icon">📄</div>
+              <div class="info-content">
+                <strong>Content</strong>
+                <span>File Analysis</span>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-icon">⚡</div>
+              <div class="info-content">
+                <strong>Fast</strong>
+                <span>Gemini AI</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
 
-    <% if @success %>
-      <div class="alert alert-success">
-        <strong>✓ File moved successfully</strong>
-        <p><%= html_escape(@success) %></p>
-      </div>
-    <% end %>
+        <!-- ALERTS -->
+        <% if @error %>
+          <div class="alert alert-danger">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+              <% if @error.include?("GEMINI_API_KEY") %>
+                <strong>AI bağlantısı kurulamadı</strong>
+                <p>GEMINI_API_KEY ortam değişkeninin tanımlı olduğundan emin olun.</p>
+              <% else %>
+                <strong>Hata oluştu</strong>
+                <p><%= html_escape(@error) %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
 
-    <%= yield %>
+        <% if @success %>
+          <div class="toast-success">
+            <span class="toast-icon">✓</span> <%= html_escape(@success) %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <p><strong>AI File Assistant</strong> &copy; <%= Time.now.year %></p>
+        <p class="tech-stack">Ruby • Sinatra • Gemini AI</p>
+      </footer>
+    </main>
   </div>
 
   <script>
     function showLoading(event) {
       const btn = event.target.querySelector('button[type="submit"]');
       if(btn) {
-        btn.innerHTML = '<span class="spinner">⟳</span> AI dosyaları analiz ediyor...';
+        btn.innerHTML = '<span class="spinner"></span> AI dosyaları analiz ediyor...';
         btn.classList.add('loading');
-        // We do NOT disable the button immediately as it can prevent form submission in some browsers.
-        // Instead, just change its appearance and text.
+        // Let form submit normally, but disable button to prevent double click
+        setTimeout(() => { btn.disabled = true; }, 10);
       }
     }
 
     async function browseFolder() {
       const btn = document.getElementById('browse-btn');
       const input = document.getElementById('folder');
-      const originalText = btn.innerHTML;
-      
-      btn.innerHTML = '⏳ Açılıyor...';
-      btn.disabled = true;
+      let originalText = '';
+      if(btn) {
+        originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner"></span> Açılıyor...';
+        btn.disabled = true;
+      }
 
       try {
         const response = await fetch('/api/browse-folder');
         const data = await response.json();
         
         if (data.success && data.path) {
-          input.value = data.path;
+          if(input) input.value = data.path;
         } else if (!data.success && data.error === 'not_supported') {
-          alert("Please enter the folder path manually.");
+          alert("Lütfen klasör yolunu manuel olarak girin.");
         } else if (!data.success && data.error !== 'canceled') {
           alert("Klasör seçilirken bir hata oluştu: " + data.error);
         }
@@ -78,8 +167,10 @@
         alert("Klasör seçilirken bir bağlantı hatası oluştu.");
         console.error(error);
       } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        if(btn) {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
       }
     }
   </script>

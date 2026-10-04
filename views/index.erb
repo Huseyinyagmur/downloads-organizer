@@ -1,40 +1,49 @@
+<div class="workspace-label">AI SEARCH WORKSPACE</div>
 <div class="card search-card">
-  <h2>🔎 AI FILE SEARCH</h2>
+  <div class="search-card-header">
+    <div class="search-icon-wrapper">🔎</div>
+    <h2>AI DOSYA ARAMA</h2>
+  </div>
+  
   <form action="/search" method="post" onsubmit="showLoading(event)">
     <div class="form-group">
-      <label for="folder">Folder to search</label>
+      <label for="folder">Aranacak klasör</label>
       <div class="folder-input-group">
         <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" placeholder="C:\Path\To\Folder" required>
-        <button type="button" class="btn-secondary" id="browse-btn" onclick="browseFolder()">📁 Klasör Seç</button>
+        <button type="button" class="btn-secondary" id="browse-btn" onclick="browseFolder()">
+          <span class="btn-icon">📁</span> Seç
+        </button>
       </div>
-      <small style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-top: 0.25rem;">You can enter a folder path manually or browse for a folder.</small>
+      <small class="help-text">Windows klasör seçicisini kullanabilir veya yolu manuel olarak girebilirsiniz.</small>
     </div>
     
     <div class="form-group">
-      <label for="query">What are you looking for?</label>
-      <input type="text" id="query" name="query" value="<%= @query ? html_escape(@query) : 'bitirme projesiyle ilgili dosyaları bul' %>" placeholder="e.g. Find invoices from 2023" required>
+      <label for="query">Ne arıyorsunuz?</label>
+      <input type="text" id="query" name="query" value="<%= @query ? html_escape(@query) : '' %>" placeholder="Örn. bitirme projesiyle ilgili dosyaları bul" required>
     </div>
     
-    <div class="form-actions">
-      <button type="submit" class="btn-primary">✨ AI ile Ara</button>
+    <div class="form-actions right-align">
+      <button type="submit" class="btn-primary compact-btn">
+        <span class="btn-icon">✨</span> AI ile Ara
+      </button>
     </div>
   </form>
 </div>
 
-<% if @results %>
-  <div class="summary-card">
+<% if @results && @results.length > 0 %>
+  <div class="summary-section">
     <div class="summary-header">
-      <h3>AI SEARCH RESULTS</h3>
+      <h3>AI ARAMA SONUÇLARI</h3>
       <p class="summary-query">"<%= html_escape(@query) %>"</p>
     </div>
     <div class="summary-stats">
       <div class="stat-box">
         <span class="stat-value"><%= @total_scanned %></span>
-        <span class="stat-label">Files<br>analyzed</span>
+        <span class="stat-label">İncelenen Dosya</span>
       </div>
       <div class="stat-box">
         <span class="stat-value highlight"><%= @results.length %></span>
-        <span class="stat-label">Relevant<br>files</span>
+        <span class="stat-label">İlgili Dosya</span>
       </div>
     </div>
   </div>
@@ -43,34 +52,39 @@
     <% @results.each do |item| %>
       <div class="card result-card">
         <div class="result-header">
-          <span class="file-icon"><%= get_file_icon(item[:info][:file_name]) %></span>
-          <h3 class="file-name"><%= html_escape(item[:info][:file_name]) %></h3>
+          <div class="file-icon"><%= get_file_icon(item[:info][:file_name]) %></div>
+          <div class="file-meta">
+            <h3 class="file-name"><%= html_escape(item[:info][:file_name]) %></h3>
+            <span class="file-badge"><%= item[:info][:extension].to_s.upcase.delete('.') %></span>
+          </div>
         </div>
         
         <div class="reason-box">
-          <div class="reason-label">AI Reason</div>
-          <div class="reason-text">"<%= html_escape(item[:result]["reason"]) %>"</div>
+          <div class="reason-label">✨ AI Değerlendirmesi</div>
+          <div class="reason-text"><%= html_escape(item[:result]["reason"]) %></div>
         </div>
 
-        <form action="/move" method="post" class="move-form">
-          <input type="hidden" name="source_path" value="<%= html_escape(item[:info][:path]) %>">
-          <input type="hidden" name="file_name" value="<%= html_escape(item[:info][:file_name]) %>">
-          
-          <div class="form-group row-group">
-            <div class="input-wrapper">
-              <label>Target folder</label>
-              <input type="text" name="dest_folder" value="<%= html_escape(@folder) %>\Move-Target" required>
+        <div class="result-footer">
+          <form action="/move" method="post" class="move-form">
+            <input type="hidden" name="source_path" value="<%= html_escape(item[:info][:path]) %>">
+            <input type="hidden" name="file_name" value="<%= html_escape(item[:info][:file_name]) %>">
+            
+            <div class="target-row">
+              <div class="target-input-wrapper">
+                <label>📁 Hedef:</label>
+                <input type="text" name="dest_folder" value="<%= html_escape(@folder) %>\Move-Target" required class="input-minimal">
+              </div>
+              <button type="submit" class="btn-secondary move-btn">Dosyayı Taşı</button>
             </div>
-            <button type="submit" class="btn-secondary">📦 Taşı</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     <% end %>
   </div>
-<% elsif request.path_info == '/' && !@error && !@success %>
-  <div class="card empty-state">
-    <div class="empty-icon">✨</div>
-    <h2>AI ile dosyalarınızı bulun</h2>
-    <p>Bir klasör seçin ve ne aradığınızı<br>doğal dille yazın.</p>
+<% elsif @results && @results.length == 0 %>
+  <div class="empty-state">
+    <div class="empty-icon">🔎</div>
+    <h2>İlgili dosya bulunamadı</h2>
+    <p>Arama sorgunuzu değiştirerek tekrar deneyin.</p>
   </div>
 <% end %>

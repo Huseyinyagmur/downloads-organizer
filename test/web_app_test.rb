@@ -16,7 +16,7 @@ class WebAppTest < Minitest::Test
     get '/'
     assert_predicate last_response, :ok?
     assert_match(/AI File Assistant/, last_response.body)
-    assert_match(/What are you looking for/, last_response.body)
+    assert_match(/Ne arıyorsunuz\?/, last_response.body)
   end
 
   def test_search_without_folder_returns_error
@@ -37,7 +37,7 @@ class WebAppTest < Minitest::Test
     begin
       post '/search', folder: test_dir, query: 'test'
       assert_predicate last_response, :ok?
-      assert_match(/GEMINI_API_KEY environment variable tanımlayın/, last_response.body)
+      assert_match(/GEMINI_API_KEY ortam değişkeninin tanımlı olduğundan emin olun/, last_response.body)
     ensure
       ENV["GEMINI_API_KEY"] = original_api_key
       FileUtils.rm_rf(test_dir)
@@ -60,7 +60,7 @@ class WebAppTest < Minitest::Test
       AiClassifier.stub :classify_files, mock_results do
         post '/search', folder: test_dir, query: 'find test'
         assert_predicate last_response, :ok?
-        assert_match(/Relevant<br>files/, last_response.body)
+        assert_match(/İlgili/, last_response.body)
         assert_match(/Because test\./, last_response.body)
       end
     ensure

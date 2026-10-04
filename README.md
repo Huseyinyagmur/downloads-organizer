@@ -145,7 +145,7 @@ ruby -Ilib:test -e "Dir.glob('./test/**/*_test.rb').each { |file| require file }
 ```
 
 **Güncel Test Sonucu:**
-`18 runs, 43 assertions, 0 failures, 0 errors, 0 skips`
+`20 runs, 45 assertions, 0 failures, 0 errors, 0 skips`
 
 ## 14. Log Sistemi
 Program her çalıştırıldığında CLI ve Web üzerinden yapılan sonuçları `logs/organizer.log` dosyasına kaydeder.
