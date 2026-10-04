@@ -2,8 +2,12 @@
   <h2>🔎 AI FILE SEARCH</h2>
   <form action="/search" method="post" onsubmit="showLoading(event)">
     <div class="form-group">
-      <label for="folder">Folder</label>
-      <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" placeholder="C:\Path\To\Folder" required>
+      <label for="folder">Folder to search</label>
+      <div class="folder-input-group">
+        <input type="text" id="folder" name="folder" value="<%= @folder ? html_escape(@folder) : 'C:\AI-Test' %>" placeholder="C:\Path\To\Folder" required>
+        <button type="button" class="btn-secondary" id="browse-btn" onclick="browseFolder()">📁 Klasör Seç</button>
+      </div>
+      <small style="color: var(--text-muted); font-size: 0.85rem; display: block; margin-top: 0.25rem;">You can enter a folder path manually or browse for a folder.</small>
     </div>
     
     <div class="form-group">

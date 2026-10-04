@@ -54,6 +54,34 @@
         // Instead, just change its appearance and text.
       }
     }
+
+    async function browseFolder() {
+      const btn = document.getElementById('browse-btn');
+      const input = document.getElementById('folder');
+      const originalText = btn.innerHTML;
+      
+      btn.innerHTML = '⏳ Açılıyor...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch('/api/browse-folder');
+        const data = await response.json();
+        
+        if (data.success && data.path) {
+          input.value = data.path;
+        } else if (!data.success && data.error === 'not_supported') {
+          alert("Please enter the folder path manually.");
+        } else if (!data.success && data.error !== 'canceled') {
+          alert("Klasör seçilirken bir hata oluştu: " + data.error);
+        }
+      } catch (error) {
+        alert("Klasör seçilirken bir bağlantı hatası oluştu.");
+        console.error(error);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>

@@ -181,6 +181,26 @@ input[type="text"]:focus {
   margin-top: 2rem;
 }
 
+.folder-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 500px) {
+  .folder-input-group {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .folder-input-group input {
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
+  .folder-input-group button {
+    white-space: nowrap;
+  }
+}
+
 /* BUTTONS */
 button {
   font-family: inherit;

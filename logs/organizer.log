@@ -28,3 +28,6 @@
 2026-10-02 21:24:37 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
 2026-10-02 21:24:58 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 2 dosya incelendi | 1 ilgili
 2026-10-02 21:25:01 | WEB_MOVE | bitirme_notu.txt -> Move-Target
+2026-10-04 10:22:57 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-04 10:22:57 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-04 10:39:53 | WEB_SEARCH | Query: bitirme projesiyle ilgili dosyaları bul | 77 dosya incelendi | 23 ilgili

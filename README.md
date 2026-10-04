@@ -130,6 +130,7 @@ Uygulama çalıştıktan sonra tarayıcınızda şu adrese gidin:
 [http://localhost:4567](http://localhost:4567)
 
 Web arayüzü sayesinde:
+- Kullanıcı klasör yolunu manuel girebilir veya Windows klasör seçicisini kullanarak klasör seçebilir.
 - Hedef klasörleri form alanından kolayca seçebilirsiniz.
 - AI Search sonuçlarını (sadece ilgili/relevant olanları) kartlar halinde inceleyebilirsiniz.
 - Seçtiğiniz dosyanın yanındaki hedef formunu kullanarak tek tıklamayla dosyayı taşıyabilirsiniz.

@@ -2,6 +2,8 @@ require 'sinatra'
 require 'fileutils'
 require_relative 'file_reader'
 require_relative 'ai_classifier'
+require_relative 'folder_picker'
+require 'json'
 
 # ERB escape utils
 helpers do
@@ -62,6 +64,21 @@ end
 
 get '/' do
   erb :index
+end
+
+get '/api/browse-folder' do
+  content_type :json
+  path = FolderPicker.browse
+  
+  if path
+    { success: true, path: path }.to_json
+  else
+    if RUBY_PLATFORM =~ /mswin|mingw|cygwin/
+      { success: false, error: 'canceled' }.to_json
+    else
+      { success: false, error: 'not_supported' }.to_json
+    end
+  end
 end
 
 post '/search' do

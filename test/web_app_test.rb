@@ -1,6 +1,7 @@
 ENV['APP_ENV'] = 'test'
 
 require 'minitest/autorun'
+require 'minitest/mock'
 require 'rack/test'
 require_relative '../web_app'
 

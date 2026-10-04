@@ -1,4 +1,5 @@
 require "minitest/autorun"
+require "minitest/mock"
 require_relative "../file_reader"
 require_relative "../ai_classifier"
 require_relative "../file_assistant"
