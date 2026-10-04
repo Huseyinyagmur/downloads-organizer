@@ -4,6 +4,7 @@ require_relative 'file_reader'
 require_relative 'ai_classifier'
 require_relative 'folder_picker'
 require 'json'
+require 'dotenv/load'
 
 # ERB escape utils
 helpers do

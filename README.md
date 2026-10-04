@@ -84,14 +84,17 @@ Program hiçbir dosyayı otomatik veya izinsiz olarak taşımaz.
 - Kullanıcı onaylamadığı sürece sistem hiçbir dosyaya müdahale etmez.
 
 ## 10. API Key Kurulumu
-Projeyi çalıştırabilmek için Google Gemini API anahtarına ihtiyacınız vardır. Bu anahtar `ENV["GEMINI_API_KEY"]` environment variable'ı (ortam değişkeni) ile tanımlanır. Gerçek API anahtarınızı (API key) kesinlikle kaynak kodlara veya GitHub'a yüklemeyin.
+Projeyi çalıştırabilmek için Google Gemini API anahtarına ihtiyacınız vardır.
 
-Windows PowerShell'de tanımlamak için:
-```powershell
-$env:GEMINI_API_KEY="your_api_key_here"
+### Gemini API Key
+
+Proje root dizininde `.env` dosyası oluşturun:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-Veya `.env` dosyası oluşturarak yönetebilirsiniz (Bu dosya `.gitignore` a eklenmiştir). API key bulunmazsa program, hata fırlatmadan "GEMINI_API_KEY environment variable is not set." mesajı verir ve güvenli bir şekilde kapanır.
+Gerçek API key `.env` içinde tutulur ve `.env` dosyası `.gitignore` tarafından Git dışında bırakılır (GitHub'a gönderilmez). Artık PowerShell'de `$env:GEMINI_API_KEY` tanımlamanız gerekmemektedir. API key bulunmazsa program, hata fırlatmadan "GEMINI_API_KEY environment variable is not set." veya benzeri bir mesaj vererek güvenli şekilde kapanır.
 
 ## 11. Çalıştırma Komutları
 

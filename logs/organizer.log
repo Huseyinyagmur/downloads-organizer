@@ -38,3 +38,8 @@
 2026-10-04 10:49:52 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
 2026-10-04 10:51:40 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
 2026-10-04 10:51:41 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-04 10:54:57 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-04 10:54:58 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-04 12:24:22 | AI_SEARCH | query="bitirme projesi" | scanned=2 | matched=1
+2026-10-04 12:24:23 | WEB_SEARCH | Query: find test | 1 dosya incelendi | 1 ilgili
+2026-10-04 12:27:05 | WEB_SEARCH | Query: proje | 77 dosya incelendi | 16 ilgili

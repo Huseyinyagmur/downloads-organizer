@@ -1,6 +1,7 @@
 require "net/http"
 require "json"
 require "uri"
+require "dotenv/load"
 
 module AiClassifier
   def self.classify_files(query, files_info)
