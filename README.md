@@ -1,6 +1,19 @@
 # Downloads Organizer
 
-Downloads Organizer, Windows'taki Downloads klasöründe biriken dosyaları dosya uzantılarına göre otomatik olarak kategorilere ayıran ve AI desteği ile doğal dilde arama yapabilen küçük bir Ruby CLI aracıdır.
+Downloads Organizer, Windows'taki Downloads klasöründe biriken dosyaları dosya uzantılarına göre otomatik olarak kategorilere ayıran, AI desteği ile doğal dilde arama yapabilen küçük bir Ruby CLI ve Web aracıdır.
+
+Proje artık iki şekilde kullanılabiliyor:
+1. CLI
+2. Sinatra Web Interface
+
+**Web Teknolojileri:**
+- Ruby
+- Sinatra 4.x
+- Puma
+- Rackup
+- ERB
+- Vanilla CSS
+- Gemini API
 
 ## 1. Problem
 Downloads klasörümde farklı türlerde dosyalar birikiyor ve belirli aralıklarla bunları manuel olarak kategorilere ayırmam gerekiyor. Ayrıca "bitirme projemle ilgili dosyalar", "staj belgeleri" gibi belirli bir amaca hizmet eden dosyaları, sadece isimlerine bakarak bulmak zorlaşıyor ve içeriklerini tek tek kontrol etmek zaman kaybettiriyor.
@@ -29,27 +42,40 @@ Downloads Organizer'ın temel yeteneği, Downloads klasöründeki dosyaları uza
 ## 6. AI File Search Özelliği
 Bu özellik sayesinde sistem sadece bir organizer olmaktan çıkarak AI destekli bir kişisel dosya bulma ve düzenleme aracına dönüştü. "Bitirme projesiyle ilgili dosyaları bul" veya "CV hazırlarken kullanabileceğim projelerimi bul" gibi doğal dilde sorgular yapabilirsiniz. Program, belirttiğiniz klasördeki metin tabanlı (txt, md, csv, rb vb.) dosyaların içeriğini, dosya adlarını ve uzantılarını bir AI API'si ile analiz eder, ilgililik durumuna göre dosyaları listeler.
 
-## 7. Örnek Kullanım
-```powershell
-ruby file_assistant.rb search "bitirme projesi"
-```
-Bu komut sonrası program:
-1. Taranacak klasörü sorar.
-2. Dosya içeriklerini ve uzantılarını tarar.
-3. AI ile ilgililik derecelerini belirler.
-4. Dosyaları taşıyacağınız hedef klasörü sorar.
+## 7. Örnek Kullanım Akışı
 
-*Not: Dry-run moduyla dosya taşımadan test yapabilirsiniz:*
+CLI:
 ```powershell
-ruby file_assistant.rb search "bitirme projesi" --dry-run
+ruby file_assistant.rb search "bitirme projesiyle ilgili dosyaları bul" --dry-run
 ```
+
+Web:
+```powershell
+bundle install
+bundle exec ruby web_app.rb
+```
+Tarayıcı:
+[http://localhost:4567](http://localhost:4567)
+
+*Not: Örnek olarak C:\AI-Test gibi klasörler kullanabilirsiniz, kendi bilgisayarınızdaki herhangi bir klasör yolu da geçerlidir.*
 
 ## 8. AI'nin Ne Yaptığı
-AI (Google Gemini API):
-- Verilen dizindeki dosyaların isimlerini, uzantılarını ve (uygunsa) metin içeriklerini inceler.
-- Yapılan doğal dil sorgusuyla (örn: "Makine öğrenmesi dersindeki dosyalarımı bul") dosyaların ilişkili olup olmadığını (relevant true/false) değerlendirir.
-- Kullanıcıya hangi dosyanın neden ilgili olduğuna dair Türkçe kısa bir "reason" (gerekçe) döner.
-- **Sınırları:** AI sadece dosyaların ilgili olup olmadığını analiz eder, sınıflandırır ve önerir. Taşıma işlemi yapmaz.
+AI (Gemini API):
+- Verilen dizindeki dosyaların isimlerini, uzantılarını ve (uygunsa) metin içeriklerini inceler (doğal dil ile dosya arama, dosya içeriği analizi).
+- Yapılan doğal dil sorgusuyla (örn: "Makine öğrenmesi dersindeki dosyalarımı bul") dosyaların ilişkili olup olmadığını (relevant true/false filtreleme) değerlendirir.
+- Kullanıcıya hangi dosyanın neden ilgili olduğuna dair AI reason (gerekçe) döner.
+- **Sınırları:** AI sadece dosyaların ilgili olup olmadığını analiz eder, sınıflandırır ve önerir. Kullanıcı onayı olmadan dosya taşımama kuralına sıkı sıkıya uyar.
+
+## 8.5. Web Arayüzü Özellikleri
+Web arayüzünde aşağıdaki özellikler sunulmaktadır:
+- Modern dashboard
+- AI search ve search summary
+- Relevant file cards (Sadece ilgili dosyaların gösterimi)
+- AI reason (Dosyanın neden seçildiğine dair yapay zeka açıklaması)
+- Target folder seçimi ve dosya taşıma (file moving)
+- Loading state ve empty state bildirimleri
+- Success/error messages
+- Responsive design
 
 ## 9. Kullanıcının Nerede Kontrol Ettiği
 Program hiçbir dosyayı otomatik veya izinsiz olarak taşımaz. 
@@ -58,7 +84,7 @@ Program hiçbir dosyayı otomatik veya izinsiz olarak taşımaz.
 - Kullanıcı onaylamadığı sürece sistem hiçbir dosyaya müdahale etmez.
 
 ## 10. API Key Kurulumu
-Projeyi çalıştırabilmek için Google Gemini API anahtarına ihtiyacınız vardır. Bu anahtar kesinlikle kaynak kodlara veya GitHub'a yüklenmemelidir. 
+Projeyi çalıştırabilmek için Google Gemini API anahtarına ihtiyacınız vardır. Bu anahtar `ENV["GEMINI_API_KEY"]` environment variable'ı (ortam değişkeni) ile tanımlanır. Gerçek API anahtarınızı (API key) kesinlikle kaynak kodlara veya GitHub'a yüklemeyin.
 
 Windows PowerShell'de tanımlamak için:
 ```powershell
@@ -111,11 +137,14 @@ Web arayüzü sayesinde:
 ## 12. User Approval
 AI dosyaları otomatik olarak taşımaz. Kullanıcı taşımayı onaylamadan (CLI'da "y" diyerek, Web arayüzünde "Taşı" butonuna basarak) dosya hareket ettirilmez.
 
-## 13. Test Komutu
+## 13. Test Komutu ve Sonuçları
 Projedeki tüm testleri çalıştırmak ve sistemdeki kırılmaları önlemek için (API çağrıları mock'lanmıştır):
 ```powershell
 ruby -Ilib:test -e "Dir.glob('./test/**/*_test.rb').each { |file| require file }"
 ```
+
+**Güncel Test Sonucu:**
+`18 runs, 43 assertions, 0 failures, 0 errors, 0 skips`
 
 ## 14. Log Sistemi
 Program her çalıştırıldığında CLI ve Web üzerinden yapılan sonuçları `logs/organizer.log` dosyasına kaydeder.
@@ -127,11 +156,13 @@ AI Search loglarında kesinlikle API key veya dosya içeriği **loglanmaz**. Yal
 ```
 
 ## 15. Security & Environment Variables
-- Tüm dosya içerikleri API'ye gönderilmez. Büyük dosyalar (100 KB üstü) es geçilir, metinler maksimum 2000 karakterle sınırlandırılır.
-- Hassas `.env` dosyası `.gitignore` kuralları ile versiyon kontrol sisteminden çıkarılmıştır.
-- Herhangi bir ortam değişkeni (API Key) log dosyalarına kaydedilmez.
-- Web uygulamasında kullanıcı girdileri (folder path, dosya adları, vb.) HTML içine basılırken `ERB escaping` (HTML kaçış karakterleri) kullanılarak XSS saldırılarına karşı korunmuştur.
+- API key source code içinde tutulmaz, ENV değişkeniyle (`ENV["GEMINI_API_KEY"]`) alınır.
+- API key ve diğer hassas veriler GitHub'a gönderilmez.
+- Dosyalar kullanıcı onayı olmadan taşınmaz.
+- Dosyaların üzerine yazılmaz. Unique destination/collision handling kullanılır (aynı isimde dosya varsa yeni isim verilir).
+- Web uygulamasında kullanıcı girdileri HTML içine basılırken `ERB escaping` (HTML kaçış karakterleri) kullanılarak XSS saldırılarına karşı korunmuştur.
 - Bilgisayardaki tüm dosya sistemi izinsiz taranmaz; kullanıcı açıkça tarama yapılacak klasörü belirtir.
+- Tüm dosya içerikleri API'ye gönderilmez. Büyük dosyalar es geçilir.
 
 ## 16. 5 Günlük Gerçek Kullanım Değerlendirmesi
 Araç teslimden önce en az 5 gün gerçek kullanım sırasında kullanılacaktır. Her çalıştırma `logs/organizer.log` dosyasına kaydedilecektir. 5 günlük kullanım sonunda aşağıdaki değerler karşılaştırılacaktır:
@@ -147,29 +178,19 @@ Araç teslimden önce en az 5 gün gerçek kullanım sırasında kullanılacakt�
 
 ```text
 downloads-organizer/
-│
-├── tidy_downloads.rb          # Eski Organizer temel dosyası
-├── file_assistant.rb          # AI File Search CLI ana girişi
-├── file_reader.rb             # Dosya okuma modülü
-├── ai_classifier.rb           # AI API bağlantı ve JSON parse modülü
-├── web_app.rb                 # Sinatra Web App ana girişi
-├── Gemfile                    # Ruby bağımlılıkları (Sinatra vb.)
-├── .gitignore                 # Güvenlik ve çöp dosyaları engelleme
-│
+├── tidy_downloads.rb
+├── file_reader.rb
+├── ai_classifier.rb
+├── file_assistant.rb
+├── web_app.rb
 ├── views/
-│   ├── layout.erb             # Web arayüzü iskeleti
-│   └── index.erb              # Web arayüzü ana sayfası
-│
+│   ├── layout.erb
+│   └── index.erb
 ├── public/
-│   └── style.css              # Web arayüzü CSS tasarımı
-│
+│   └── style.css
 ├── test/
-│   ├── tidy_downloads_test.rb # Temel organizer testleri
-│   ├── file_assistant_test.rb # AI özelliği ve okuma testleri
-│   └── web_app_test.rb        # Web API / UI uç noktası testleri
-│
 ├── logs/
-│   └── organizer.log          # Çalıştırma geçmişi
-│
-└── README.md                  # Proje dökümantasyonu
+├── Gemfile
+├── Gemfile.lock
+└── README.md
 ```
